@@ -60,10 +60,58 @@ pipeline {
 
     post {
         success {
-            echo "✅ DEPLOYMENT SUCCESSFUL 🚀"
-        }
+        emailext(
+            subject: "✅ FastAPI Deployment SUCCESS on AWS EC2 ",
+            body: """
+                Deployment Successful 🚀
+
+                Job Name: ${env.JOB_NAME}
+                Build Number: ${env.BUILD_NUMBER}
+                Build URL: ${env.BUILD_URL}
+                Build Time: ${env.BUILD_TIME}
+                Build Date: ${env.BUILD_DATE}
+                Build Version: ${env.BUILD_VERSION}
+                Build User: ${env.BUILD_USER}
+                Build Agent: ${env.BUILD_AGENT}
+                Build Agent Name: ${env.BUILD_AGENT_NAME}
+                Build Agent Version: ${env.BUILD_AGENT_VERSION}
+                Build Agent OS: ${env.BUILD_AGENT_OS}
+                Build Agent Architecture: ${env.BUILD_AGENT_ARCHITECTURE}
+                Build Timestamp: ${env.BUILD_TIMESTAMP}
+                Build Workspace: ${env.BUILD_WORKSPACE}
+
+                Server: AWS EC2
+                App: FastAPI
+                Status: SUCCESS
+                """,
+            to: "codeguyakash@gmail.com"
+        )
+    }
         failure {
-            echo "❌ DEPLOYMENT FAILED"
-        }
+        emailext(
+            subject: "❌ FastAPI Deployment FAILED on ${env.BUILD_NUMBER}",
+            body: """
+                Deployment Failed ❌
+
+                Job Name: ${env.JOB_NAME}
+                Build Number: ${env.BUILD_NUMBER}
+                Build URL: ${env.BUILD_URL}
+                Build Time: ${env.BUILD_TIME}
+                Build Date: ${env.BUILD_DATE}
+                Build Version: ${env.BUILD_VERSION}
+                Build User: ${env.BUILD_USER}
+                Build Agent: ${env.BUILD_AGENT}
+                Build Agent Name: ${env.BUILD_AGENT_NAME}
+                Build Agent Version: ${env.BUILD_AGENT_VERSION}
+                Build Agent OS: ${env.BUILD_AGENT_OS}
+                Build Agent Architecture: ${env.BUILD_AGENT_ARCHITECTURE}
+                Build Timestamp: ${env.BUILD_TIMESTAMP}
+                Build Workspace: ${env.BUILD_WORKSPACE}
+
+                Please check Jenkins logs immediately.
+                """,
+            to: "codeguyakash@gmail.com"
+        )
+    }
     }
 }
