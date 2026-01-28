@@ -15,7 +15,7 @@ teas: List[Tea]=[]
 
 @app.get("/")
 def read_root():
-    return {"Hello": "codeguyakash"}
+    return {"Hello": "Deployed successfully using Jenkins"}
 
 @app.get("/teas")
 def get_teas():
