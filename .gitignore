@@ -1,0 +1,73 @@
+# 
+# Python
+# 
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.so
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# 
+# FastAPI / Uvicorn
+# 
+*.log
+logs/
+gunicorn.conf.py
+uvicorn.log
+
+# 
+# Environment variables
+# 
+.env
+.env.*
+!.env.example
+
+# 
+# PM2
+# 
+.pmx
+pm2.log
+pm2.pid
+
+# 
+# OS / Editor
+# 
+.DS_Store
+Thumbs.db
+
+.vscode/
+.idea/
+*.swp
+
+# 
+# Testing / Coverage
+# 
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# 
+# Build / Packaging
+# 
+dist/
+build/
+*.egg-info/
+
+# 
+# SQLite / DB
+# 
+*.sqlite3
+*.db
+
+# 
+# Misc
+# 
+.cache/

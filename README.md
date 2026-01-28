@@ -16,3 +16,6 @@ For PROD : export ENV=production
 For DEV : export ENV=development
 
 uvicorn main:app --reload
+
+on server
+pm2 restart fastapi-api --update-env
