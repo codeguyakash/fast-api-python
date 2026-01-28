@@ -84,7 +84,7 @@ pipeline {
                     App: FastAPI
                     Status: SUCCESS
                     """,
-                to: "codeguyakash@gmail.com"
+                to: "codeguyakash.dev@gmail.com"
             )
             echo "✅ Deployment Successful"
         }
@@ -111,7 +111,7 @@ pipeline {
 
                     Please check Jenkins logs immediately.
                     """,
-                to: "codeguyakash@gmail.com"
+                to: "codeguyakash.dev@gmail.com"
             )
             echo "❌ Deployment Failed"
         }
