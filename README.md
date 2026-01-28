@@ -7,3 +7,6 @@ make dep file : pip freeze > requirements.txt
 pip3 install requests or pip install requests
 
 run file wiht uvicorn : uvicorn main:app --reload
+
+git commit --allow-empty -m "trigger jenkins build"
+git push origin main

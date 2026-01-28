@@ -1,12 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        SERVER_IP = credentials('aws-ec2-ip')
-        APP_DIR   = credentials('aws-ec2-app-dir')
-        PM2_APP   = credentials('aws-ec2-pm2-app')
-    }
-
     stages {
 
         stage('Clone Repository') {
@@ -39,31 +33,17 @@ pipeline {
             }
         }
 
-        stage('Deploy to AWS EC2') {
+        stage('Deployment Complete') {
             steps {
-                echo "🚀 Deploying to AWS EC2..."
-
-                sshagent(['aws-ec2-key']) {
-                    sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@${SERVER_IP} '
-                        cd ${APP_DIR} &&
-                        git pull origin main &&
-                        source venv/bin/activate &&
-                        pip install -r requirements.txt &&
-                        pm2 restart ${PM2_APP}
-                    '
-                    """
-                }
+                echo "✅ Jenkins pipeline SUCCESS"
+                echo "🚀 Next: AWS deployment later"
             }
         }
     }
 
     post {
-        success {
-            echo "✅ DEPLOYMENT SUCCESSFUL 🚀"
-        }
         failure {
-            echo "❌ DEPLOYMENT FAILED"
+            echo "❌ Jenkins pipeline FAILED"
         }
     }
 }
