@@ -11,36 +11,37 @@ pipeline {
             }
         }
 
-        stage('Check Python') {
+        stage('Setup Python venv') {
             steps {
-                echo "🐍 Checking Python version..."
+                echo "🐍 Creating virtual environment..."
                 sh '''
-                    python3 --version || python --version
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    python --version
+                    pip install --upgrade pip
                 '''
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                echo "📦 Installing dependencies from requirements.txt..."
+                echo "📦 Installing dependencies..."
                 sh '''
-                    pip3 install -r requirements.txt || pip install -r requirements.txt
+                    . venv/bin/activate
+                    pip install -r requirements.txt
                 '''
             }
         }
 
         stage('Deployment Complete') {
             steps {
-                echo "✅ Code successfully deployed on Jenkins server"
-                echo "🚀 Next step: AWS deployment will be added later"
+                echo "✅ Jenkins pipeline SUCCESS"
+                echo "🚀 Next: AWS deployment later"
             }
         }
     }
 
     post {
-        success {
-            echo "🎉 Jenkins pipeline SUCCESS"
-        }
         failure {
             echo "❌ Jenkins pipeline FAILED"
         }
