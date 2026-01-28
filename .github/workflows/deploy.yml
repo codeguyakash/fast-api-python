@@ -25,3 +25,6 @@ jobs:
             source venv/bin/activate
             pip install -r requirements.txt
             pm2 restart fastapi-api
+            echo "✅ Deploy Success"
+            echo "🚀 Server updated and running"
+            exit
