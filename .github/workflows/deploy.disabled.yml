@@ -16,15 +16,17 @@ jobs:
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.NEW_EC2_HOST }}
-          username: ${{ secrets.NEW_EC2_USER }}
-          key: ${{ secrets.NEW_EC2_KEY }}
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
           script: |
-            cd /var/www/fast-api-python
+            export PATH=$PATH:/usr/local/bin
+
+            cd ${{ secrets.EC2_APP_DIR }}
             git pull origin main
             source venv/bin/activate
             pip install -r requirements.txt
-            pm2 restart fastapi-api
+            pm2 restart ${{ secrets.EC2_PM2_APP }}
+
             echo "✅ Deploy Success"
             echo "🚀 Server updated and running"
-            exit
