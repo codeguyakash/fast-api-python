@@ -10,3 +10,9 @@ run file wiht uvicorn : uvicorn main:app --reload
 
 git commit --allow-empty -m "trigger jenkins build"
 git push origin main
+
+For PROD : export ENV=production
+
+For DEV : export ENV=development
+
+uvicorn main:app --reload

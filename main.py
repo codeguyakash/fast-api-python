@@ -1,31 +1,54 @@
+import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Optional
-
+import os, platform, socket, sys
 
 
 app = FastAPI()
+env = os.getenv("ENV")
 
-class Tea(BaseModel):
+class Book(BaseModel):
     id: int
-    name: str
-    origin: str
+    book: str
+    author: str
 
-teas: List[Tea]=[]
+books: List[Book]=[]
 
 @app.get("/")
 def read_root():
-    return {"Hello": "Deployed successfully using Jenkins v2"}
+    return {
+        "message": "Server is running",
+        "app_version": "1.0.0",
+        "env": env,
+    }
 
-@app.get("/teas")
-def get_teas():
-    return teas
-
-
-@app.post("/teas")
-def create_tea(tea: Tea):
-    teas.append(tea)
-    return tea
+@app.get("/books")
+def get_books():
+    return books
 
 
+@app.post("/books")
+def create_book(book: Book):
+    books.append(book)
+    return book
 
+@app.get("/books/{book_id}")
+def get_book(book_id: int):
+    return next((book for book in books if book.id == book_id), None)
+
+
+@app.put("/books/{book_id}")
+def update_book(book_id: int, book: Book):
+    for book in books:
+        if book.id == book_id:
+            book.book = book.book
+            book.author = book.author
+            return book
+    return None
+
+@app.delete("/books/{book_id}")
+def delete_book(book_id: int):
+    global books
+    books = [book for book in books if book.id != book_id]
+    return {"message": "Book deleted successfully"}  
