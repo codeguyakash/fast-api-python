@@ -32,7 +32,9 @@ app.main:app --host 0.0.0.0 --port 8000
 final working
 
 pm2 delete fast-api-python
-pm2 start "/var/www/fast-api-python/venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000" --name fast-api-python
+
+pm2 start "venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000" --name fast-api-python
+
 pm2 save
 
 see the logs : pm2 logs fast-api-python
