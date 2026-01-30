@@ -19,7 +19,7 @@ books: List[Book]=[]
 def read_root():
     return {
         "message": "Server is running",
-        "app_version": "1.0.0",
+        "app_version": "1.0.1",
         "env": env,
     }
 

@@ -15,7 +15,15 @@ For PROD : export ENV=production
 
 For DEV : export ENV=development
 
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 
 on server
-pm2 restart fastapi-api --update-env
+pm2 restart fast-api-python --update-env
+
+kill -9 $(lsof -t -i:8000)
+
+pm2 start /var/www/fast-api-python/venv/bin/uvicorn \
+--name fast-api-python \
+--interpreter none \
+-- \
+app.main:app --host 0.0.0.0 --port 8000
