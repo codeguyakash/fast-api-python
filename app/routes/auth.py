@@ -5,17 +5,14 @@ from datetime import datetime
 from app.schemas.user_schema import UserRegister, UserLogin
 from app.models.user_model import UserModel
 from app.config.db import user_collection
+from app.utils.jwt import create_access_token
+from app.utils.response import success_response
 
 
-router = APIRouter(
-    prefix="/auth",
-    tags=["Auth"]
-)
+router = APIRouter(prefix="/auth", tags=["Auth"])
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-
-# ---------------- REGISTER ----------------
 @router.post("/register")
 def register(user: UserRegister):
 
@@ -29,22 +26,28 @@ def register(user: UserRegister):
             detail="User already exists"
         )
 
-    password = pwd_context.hash(user.password)
+    hashed_password = pwd_context.hash(user.password)
 
     new_user = UserModel(
         email=user.email,
-        password=password,
+        password=hashed_password,
         name=user.name
     )
 
-    user_collection.insert_one(new_user.to_dict())
+    result = user_collection.insert_one(new_user.to_dict())
 
-    return {
-        "message": "User registered successfully"
-    }
+    return success_response(
+        message="User registered successfully",
+        code=201,
+        data={
+            "user": {
+                "id": str(result.inserted_id),
+                "name": user.name,
+                "email": user.email
+            }
+        }
+    )
 
-
-# ---------------- LOGIN ----------------
 @router.post("/login")
 def login(user: UserLogin):
 
@@ -53,23 +56,30 @@ def login(user: UserLogin):
     )
 
     if not db_user:
-        raise HTTPException(
-            status_code=400,
-            detail="Invalid email or password"
-        )
+        raise HTTPException(400, "Invalid email or password")
 
     if not pwd_context.verify(user.password, db_user["password"]):
-        raise HTTPException(
-            status_code=400,
-            detail="Invalid email or password"
-        )
+        raise HTTPException(400, "Invalid email or password")
 
     user_collection.update_one(
         {"_id": db_user["_id"]},
         {"$set": {"lastLoginAt": datetime.utcnow()}}
     )
 
-    return {
-        "message": "Login successful",
+    access_token = create_access_token({
+        "id": str(db_user["_id"]),
+        "name": db_user["name"],
         "email": db_user["email"]
-    }
+    })
+
+    return success_response(
+        message="Login successful",
+        data={
+            "user": {
+                "id": str(db_user["_id"]),
+                "name": db_user["name"],
+                "email": db_user["email"]
+            },
+            "access_token": access_token
+        }
+    )

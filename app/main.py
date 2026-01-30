@@ -1,8 +1,15 @@
 import os
 from fastapi import FastAPI
+from fastapi.exceptions import HTTPException
 from dotenv import load_dotenv
 
-from app.routes.auth import router
+from app.routes.auth import router as auth_router
+from app.routes.user import router as user_router
+
+from app.middlewares.error_handler import (
+    http_exception_handler,
+    general_exception_handler
+)
 
 load_dotenv()
 
@@ -17,12 +24,17 @@ app = FastAPI(
     openapi_url=None if isProduction else "/openapi.json"
 )
 
+app.add_exception_handler(HTTPException, http_exception_handler)
+app.add_exception_handler(Exception, general_exception_handler)
 
-
-
-# 👇 API versioning (industry standard)
+# 🔥 API VERSIONING
 app.include_router(
-    router,
+    auth_router,
+    prefix="/api/v1"
+)
+
+app.include_router(
+    user_router,
     prefix="/api/v1"
 )
 
@@ -30,8 +42,10 @@ app.include_router(
 @app.get("/")
 def read_root():
     return {
+        "success": True,
         "message": "Server is running",
-        "env": "production" if isProduction else "development",
-        "status": "success",
-        "status_code": 200
+        "data": {
+            "env": "production" if isProduction else "development"
+        },
+        "error": None
     }
