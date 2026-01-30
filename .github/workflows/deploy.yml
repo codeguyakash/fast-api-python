@@ -23,7 +23,10 @@ jobs:
             export PATH=$PATH:/usr/local/bin
 
             cd ${{ secrets.EC2_APP_DIR }}
-            git pull origin main
+
+            git fetch origin
+            git reset --hard origin/main
+
             source venv/bin/activate
             pip install -r requirements.txt
             pm2 restart fast-api-python
