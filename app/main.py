@@ -22,7 +22,7 @@ books: List[Book]=[]
 @app.get("/")
 def read_root():
     return {
-        "message": "Server is running final 2",
+        "message": "Server is running",
         "app_version": APP_VERSION,
         "env": ENV, 
         "status": 'success',
