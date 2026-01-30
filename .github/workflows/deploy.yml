@@ -26,7 +26,7 @@ jobs:
             git pull origin main
             source venv/bin/activate
             pip install -r requirements.txt
-            pm2 restart ${{ secrets.EC2_PM2_APP }}
+            pm2 restart fast-api-python
 
             echo "✅ Deploy Success"
             echo "🚀 Server updated and running"
