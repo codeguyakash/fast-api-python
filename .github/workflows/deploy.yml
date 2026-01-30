@@ -22,13 +22,14 @@ jobs:
           script: |
             export PATH=$PATH:/usr/local/bin
 
-            cd ${{ secrets.EC2_APP_DIR }}
+            cd /var/www/fast-api-python
 
-            git pull origin main
+            git fetch origin
+            git reset --hard origin/main
 
             source venv/bin/activate
             pip install -r requirements.txt
+
             pm2 restart fast-api-python
 
             echo "✅ Deploy Success"
-            echo "🚀 Server updated and running"
