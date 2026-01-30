@@ -22,9 +22,11 @@ books: List[Book]=[]
 @app.get("/")
 def read_root():
     return {
-        "message": "Server is running using FastAPI v1",
+        "message": "Server is running",
         "app_version": APP_VERSION,
-        "env": ENV,
+        "env": ENV, 
+        "status": 'success',
+        "status_code": 200
     }
 
 @app.get("/books")

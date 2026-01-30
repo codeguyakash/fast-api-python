@@ -8,7 +8,7 @@ pip3 install requests or pip install requests
 
 run file wiht uvicorn : uvicorn main:app --reload
 
-git commit --allow-empty -m "trigger jenkins build"
+git commit --allow-empty -m "trigger build"
 git push origin main
 
 For PROD : export ENV=production
