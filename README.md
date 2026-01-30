@@ -24,6 +24,7 @@ kill -9 $(lsof -t -i:8000)
 
 pm2 start /var/www/fast-api-python/venv/bin/uvicorn \
 --name fast-api-python \
+--cwd /var/www/fast-api-python \
 --interpreter none \
 -- \
 app.main:app --host 0.0.0.0 --port 8000

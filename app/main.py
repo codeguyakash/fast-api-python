@@ -3,10 +3,14 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List, Optional
 import os, platform, socket, sys
+from dotenv import load_dotenv
 
+load_dotenv()
 
 app = FastAPI()
-env = os.getenv("ENV")
+
+ENV = os.getenv("ENV")
+APP_VERSION = '1.0.1'
 
 class Book(BaseModel):
     id: int
@@ -19,8 +23,8 @@ books: List[Book]=[]
 def read_root():
     return {
         "message": "Server is running",
-        "app_version": "1.0.1",
-        "env": env,
+        "app_version": APP_VERSION,
+        "env": ENV,
     }
 
 @app.get("/books")
