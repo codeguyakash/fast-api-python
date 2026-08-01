@@ -13,7 +13,7 @@ class UserModel:
         phone_number: Optional[str] = None,
         date_of_birth: Optional[str] = None,
         gender: Optional[str] = None,
-        roles: List[str] = ["user"],
+        role: str = "user",
         status: str = "active",
         preferences: Dict = {},
         social_auth: Dict = {},
@@ -33,7 +33,7 @@ class UserModel:
         self.dateOfBirth = date_of_birth
         self.gender = gender
 
-        self.roles = roles
+        self.role = role
         self.status = status
 
         self.preferences = preferences
@@ -57,7 +57,7 @@ class UserModel:
             "dateOfBirth": self.dateOfBirth,
             "gender": self.gender,
 
-            "roles": self.roles,
+            "role": self.role,
             "status": self.status,
 
             "preferences": self.preferences,
